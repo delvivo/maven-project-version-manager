@@ -1,15 +1,13 @@
 package it.fdv.mvn.utils;
 
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 
 public class IncreaseVersionUtil {
 
@@ -55,11 +53,40 @@ public class IncreaseVersionUtil {
         MavenXpp3Reader reader = new MavenXpp3Reader();
         Model model = reader.read(new FileReader(project.getFile()));
 
+        if (project.getModules() != null && !project.getModules().isEmpty()) {
+            saveModulesChanges(project, version);
+        }
+
         model.setVersion(version);
 
         MavenXpp3Writer writer = new MavenXpp3Writer();
         Writer fileWriter = new FileWriter(project.getFile());
         writer.write(fileWriter, model);
         fileWriter.close();
+    }
+
+    private static void saveModulesChanges(MavenProject project, String newVersion) throws IOException, XmlPullParserException {
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        MavenXpp3Writer writer = new MavenXpp3Writer();
+
+        Model mainProjectModel = reader.read(new FileReader(project.getFile()));
+
+        for (String moduleName : mainProjectModel.getModules()) {
+            File modulePomFile = new File(project.getBasedir(), moduleName + "/pom.xml");
+            Model moduleModel = reader.read(new FileReader(modulePomFile));
+
+            Parent parent = moduleModel.getParent();
+            if (parent != null && project.getGroupId().equals(parent.getGroupId()) && project.getArtifactId().equals(parent.getArtifactId())) {
+                parent.setVersion(newVersion);
+
+                if (moduleModel.getVersion().equals(project.getVersion())) {
+                    moduleModel.setVersion(newVersion);
+                }
+
+                Writer moduleWriter = new FileWriter(modulePomFile);
+                writer.write(moduleWriter, moduleModel);
+                moduleWriter.close();
+            }
+        }
     }
 }

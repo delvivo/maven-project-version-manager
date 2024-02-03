@@ -21,7 +21,9 @@ public class IncreaseMajorReleaseVersionMojo extends AbstractMojo {
             String projectVersion = project.getVersion();
             String newVersion = IncreaseVersionUtil.increaseMajorReleaseVersion(projectVersion);
             getLog().info(String.format("Actual version: %s", projectVersion));
-            IncreaseVersionUtil.saveProjectChanges(project, newVersion);
+            if (project.isExecutionRoot()) {
+                IncreaseVersionUtil.saveProjectChanges(project, newVersion);
+            }
             getLog().info(String.format("New version: %s", newVersion));
         }
         catch (IOException | XmlPullParserException e) {
