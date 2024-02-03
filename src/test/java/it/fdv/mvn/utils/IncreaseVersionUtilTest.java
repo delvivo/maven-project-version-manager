@@ -28,17 +28,6 @@ public class IncreaseVersionUtilTest {
     }
 
     @Test
-    public void shouldIncreaseMajorSnapshotVersion() {
-        String version1 = "2.3.0-SNAPSHOT";
-        String version2 = "0.3.0-SNAPSHOT";
-        String version3 = "1.9.0-SNAPSHOT";
-
-        Assert.assertEquals(IncreaseVersionUtil.increaseMajorSnapshotVersion(version1), "3.0.0-SNAPSHOT");
-        Assert.assertEquals(IncreaseVersionUtil.increaseMajorSnapshotVersion(version2), "1.0.0-SNAPSHOT");
-        Assert.assertEquals(IncreaseVersionUtil.increaseMajorSnapshotVersion(version3), "2.0.0-SNAPSHOT");
-    }
-
-    @Test
     public void shouldIncreaseSnapshotVersion() {
         String version1 = "2.3.0-SNAPSHOT";
         String version2 = "0.3.0-SNAPSHOT";

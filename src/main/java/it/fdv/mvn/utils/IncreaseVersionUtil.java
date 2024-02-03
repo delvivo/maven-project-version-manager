@@ -33,15 +33,6 @@ public class IncreaseVersionUtil {
         return String.format("%s.%d.%d", v[0], ++release, 0);
     }
 
-    public static String increaseMajorSnapshotVersion(String version) {
-
-        String[] v = version.replace("-SNAPSHOT", "").split("\\.");
-
-        int release = Integer.parseInt(v[0]);
-
-        return String.format("%s.%d.%d-SNAPSHOT", ++release, 0, 0);
-    }
-
     public static String increaseSnapshotVersion(String version) {
 
         String[] v = version.replace("-SNAPSHOT", "").split("\\.");
