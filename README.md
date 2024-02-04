@@ -2,6 +2,16 @@
 
 This plugin allows to increase the project version and save it to the pom.xml file
 
+Add this plugin as below:
+
+```
+<plugin>
+    <groupId>it.fdv.mvn</groupId>
+    <artifactId>maven-project-version-manager</artifactId>
+    <version>1.0.0</version>
+</plugin>
+```
+
 ### Increase Release version
 
 To increase the release version, type the following command:
