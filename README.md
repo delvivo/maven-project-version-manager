@@ -52,3 +52,17 @@ mvn maven-project-version-manager:increase-snapshot
 This command increases the snapshot version, for example:
 
 _1.2.0 &#8594; 2.3.0-SNAPSHOT_ 
+
+
+### Force Version Update from a Snapshot
+
+It's not possible to increase a release or minor version from a Snapshot by default.
+
+To force the update, it's possible to use the parameter _-Dforce_
+
+For example:
+```
+mvn maven-project-version-manager:increase-minor -Dforce=true
+```
+
+_1.2.0-SNAPSHOT &#8594; 2.2.1_ 

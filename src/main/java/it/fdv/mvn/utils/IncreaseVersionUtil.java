@@ -1,5 +1,7 @@
 package it.fdv.mvn.utils;
 
+import it.fdv.mvn.exception.SnapshotException;
+import it.fdv.mvn.singleton.ParametersValues;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -13,7 +15,10 @@ public class IncreaseVersionUtil {
 
     private IncreaseVersionUtil() {}
 
-    public static String increaseMajorReleaseVersion(String version) {
+    public static String increaseMajorReleaseVersion(String version) throws SnapshotException {
+
+        if (version.contains("SNAPSHOT") && !ParametersValues.instance().isForce())
+            throw new SnapshotException();
 
         String[] v = version.split("\\.");
 
@@ -22,7 +27,10 @@ public class IncreaseVersionUtil {
         return String.format("%d.%d.%d", ++release, 0, 0);
     }
 
-    public static String increaseReleaseVersion(String version) {
+    public static String increaseReleaseVersion(String version) throws SnapshotException {
+
+        if (version.contains("SNAPSHOT") && !ParametersValues.instance().isForce())
+            throw new SnapshotException();
 
         String[] v = version.split("\\.");
 
@@ -40,9 +48,12 @@ public class IncreaseVersionUtil {
         return String.format("%s.%d.%d-SNAPSHOT", v[0], ++release, 0);
     }
 
-    public static String increaseMinorVersion(String version) {
+    public static String increaseMinorVersion(String version) throws SnapshotException {
 
-        String[] v = version.split("\\.");
+        if (version.contains("SNAPSHOT") && !ParametersValues.instance().isForce())
+            throw new SnapshotException();
+
+        String[] v = version.replace("-SNAPSHOT", "").split("\\.");
 
         int minor = Integer.parseInt(v[2]);
 

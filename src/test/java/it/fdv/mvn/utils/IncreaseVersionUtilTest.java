@@ -1,12 +1,13 @@
 package it.fdv.mvn.utils;
 
+import it.fdv.mvn.exception.SnapshotException;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class IncreaseVersionUtilTest {
 
     @Test
-    public void shouldIncreaseMajorReleaseVersion() {
+    public void shouldIncreaseMajorReleaseVersion() throws SnapshotException {
         String version1 = "2.3.1";
         String version2 = "0.3.0";
         String version3 = "1.9.3";
@@ -17,7 +18,7 @@ public class IncreaseVersionUtilTest {
     }
 
     @Test
-    public void shouldIncreaseReleaseVersion() {
+    public void shouldIncreaseReleaseVersion() throws SnapshotException {
         String version1 = "2.3.1";
         String version2 = "0.3.0";
         String version3 = "1.9.3";
@@ -39,7 +40,7 @@ public class IncreaseVersionUtilTest {
     }
 
     @Test
-    public void shouldIncreaseMinorVersion() {
+    public void shouldIncreaseMinorVersion() throws SnapshotException {
         String version1 = "2.3.1";
         String version2 = "0.3.0";
         String version3 = "1.9.3";

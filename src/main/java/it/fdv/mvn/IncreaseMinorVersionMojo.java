@@ -1,5 +1,8 @@
 package it.fdv.mvn;
 
+import it.fdv.mvn.exception.NoBooleanValueException;
+import it.fdv.mvn.exception.SnapshotException;
+import it.fdv.mvn.singleton.ParametersValues;
 import it.fdv.mvn.utils.IncreaseVersionUtil;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -15,9 +18,13 @@ public class IncreaseMinorVersionMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject project;
 
+    @Parameter(property = "force", defaultValue = "false")
+    private String force;
+
     @Override
     public void execute() {
         try {
+            ParametersValues.instance().setForce(force);
             String projectVersion = project.getVersion();
             String newVersion = IncreaseVersionUtil.increaseMinorVersion(projectVersion);
             getLog().info(String.format("Actual version: %s", projectVersion));
@@ -28,6 +35,9 @@ public class IncreaseMinorVersionMojo extends AbstractMojo {
         }
         catch (IOException | XmlPullParserException e) {
             getLog().error(String.format("Error saving pom.xml file - %s", e.getMessage()));
+        }
+        catch (SnapshotException | NoBooleanValueException e) {
+            getLog().error(e.getMessage());
         }
     }
 
